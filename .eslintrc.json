@@ -1,0 +1,43 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "extends": [
+    "airbnb-base"
+  ],
+  "parserOptions": {
+    "ecmaVersion": 12
+  },
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "linebreak-style": [
+      "error",
+      "unix"
+    ],
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "semi": [
+      "error",
+      "always"
+    ],
+    "comma-dangle": [
+      "error",
+      "never"
+    ],
+    "no-console": "off",
+    "no-unused-vars": "error",
+    "default-param-last": "off",
+    "consistent-return": "off",
+    "class-methods-use-this": "off",
+    "no-param-reassign": "off",
+    "import/no-dynamic-require": "off",
+    "global-require": "off",
+    "import/prefer-default-export": "off"
+  }
+}

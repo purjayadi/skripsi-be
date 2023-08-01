@@ -1,0 +1,27 @@
+version: '3'
+services:
+  pos-app:
+    container_name: pos-app-dev
+    image: pos-app-dev:1.0.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '3200:3200'
+    depends_on:
+      - db
+    command: pnpm run start:dev
+    volumes:
+      - .:/usr/src/app
+  db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - '3306:3310'
+    environment:
+      MYSQL_ROOT_PASSWORD: rootPassword
+      MYSQL_DATABASE: pos_dev
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - ./data:/var/lib/mysql

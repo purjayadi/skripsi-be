@@ -1,0 +1,27 @@
+{
+    "printWidth": 80,
+    "tabWidth": 2,
+    "useTabs": false,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "none",
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "arrowParens": "avoid",
+    "insertPragma": false,
+    "requirePragma": false,
+    "proseWrap": "preserve",
+    "overrides": [
+        {
+            "files": "*.js",
+            "options": {
+                "parser": "babel"
+            }
+        }
+    ],
+    "importOrder": [
+        "^[^.]",
+        "^\\."
+    ],
+    "importOrderSeparation": true
+}
