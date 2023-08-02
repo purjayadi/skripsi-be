@@ -1,6 +1,6 @@
+import { DuplicateException, NotFoundException } from '../common/HttpException';
 import BaseService from '../common/baseService';
 import ProductRepository from '../database/repositories/productRepository';
-import { DuplicateException, NotFoundException } from '../utils/HttpException';
 import Pagination from '../utils/pagination';
 
 const repository = new ProductRepository();
@@ -10,7 +10,7 @@ class ProductService extends BaseService {
   }
 
   async getAll(page, pageSize) {
-    const data = await repository.findAll();
+    const data = await repository.findAll(page, pageSize);
     return Pagination(data, page, pageSize);
   }
 

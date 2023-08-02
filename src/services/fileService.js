@@ -2,7 +2,7 @@ import sharp from 'sharp';
 import AWS from 'aws-sdk';
 import fs from 'fs';
 import path from 'path';
-import { BadRequestException } from '../utils/HttpException';
+import { BadRequestException } from '../common/HttpException';
 
 class FileService {
   async upload(file) {

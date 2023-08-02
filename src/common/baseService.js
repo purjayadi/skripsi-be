@@ -1,5 +1,5 @@
 import Pagination from '../utils/pagination';
-import { NotFoundException } from '../utils/HttpException/index';
+import { NotFoundException } from './HttpException';
 
 class BaseService {
   constructor(repository) {
@@ -7,7 +7,7 @@ class BaseService {
   }
 
   async getAll(page, pageSize) {
-    const data = await this.repository.findAll();
+    const data = await this.repository.findAll(page, pageSize);
     return Pagination(data, page, pageSize);
   }
 

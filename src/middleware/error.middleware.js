@@ -1,5 +1,5 @@
 import { createLogger, transports } from 'winston';
-import HttpException from '../utils/HttpException/HttpException';
+import HttpException from '../common/HttpException/HttpException';
 
 const LogErrors = createLogger({
   transports: [

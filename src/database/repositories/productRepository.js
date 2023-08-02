@@ -1,7 +1,7 @@
 import BaseRepository from '../../common/baseRepository';
 import sequelize from '../../config/database';
 import model from '../models';
-import { APIErrorException } from '../../utils/HttpException/index';
+import { APIErrorException } from '../../common/HttpException/index';
 
 const { ProductPrice, Product } = model;
 
@@ -10,15 +10,16 @@ class ProductRepository extends BaseRepository {
     super(Product);
   }
 
-  async findAll() {
+  async findAll(page, pageSize) {
     try {
       return await this.model.scope('withPrice').findAndCountAll({
+        ...(page && { offset: (Number(page) - 1) * Number(pageSize) }),
+        ...(pageSize && { limit: Number(pageSize) }),
         attributes: { exclude: ['deletedAt'] },
-
         order: [['createdAt', 'desc']]
       });
     } catch (error) {
-      throw new APIErrorException(error);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 
@@ -35,14 +36,14 @@ class ProductRepository extends BaseRepository {
       return product;
     } catch (error) {
       await t.rollback();
-      throw new APIErrorException(error);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 
   async update(id, payload) {
     const t = await sequelize.transaction();
     try {
-      const product = await this.model.update(id, payload, { transaction: t });
+      const product = await this.model.update(payload, { where: { id } }, { transaction: t });
       const productPriceList = payload.productDetail.map((item) => ({
         ...item,
         productId: product.id
@@ -57,7 +58,7 @@ class ProductRepository extends BaseRepository {
       return product;
     } catch (error) {
       await t.rollback();
-      throw new APIErrorException(error);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 
@@ -69,7 +70,7 @@ class ProductRepository extends BaseRepository {
         }
       });
     } catch (error) {
-      throw new APIErrorException(error.message);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 
@@ -77,18 +78,18 @@ class ProductRepository extends BaseRepository {
     try {
       await this.model.increment({ stock }, { where: { id: productId } });
     } catch (error) {
-      throw new APIErrorException(error.message);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 
   async decrementStock(productId, stock) {
     try {
       await this.model.increment(
-        { stock: -Number(stock) },
+        { stock: -stock },
         { where: { id: productId } }
       );
     } catch (error) {
-      throw new APIErrorException(error.message);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 }
