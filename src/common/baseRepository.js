@@ -1,4 +1,4 @@
-import { APIErrorException } from '../utils/HttpException/index';
+import { APIErrorException } from './HttpException';
 
 class BaseRepository {
   constructor(model) {
@@ -6,37 +6,58 @@ class BaseRepository {
   }
 
   async create(data) {
-    return this.model.create(data);
+    try {
+      return this.model.create(data);
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
   }
 
   async bulkCreate(data) {
-    return this.model.bulkCreate(data);
+    try {
+      return this.model.bulkCreate(data);
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
   }
 
   async findById(id) {
-    return this.model.findByPk(id);
+    try {
+      return this.model.findByPk(id);
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
   }
 
   async update(id, data) {
-    await this.model.update(data, {
-      where: { id }
-    });
+    try {
+      return await this.model.update(data, {
+        where: { id }
+      });
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
   }
 
   async delete(id) {
-    await this.model.destroy({
-      where: { id }
-    });
+    try {
+      await this.model.destroy({
+        where: { id }
+      });
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
   }
 
-  async findAll() {
+  async findAll(page, pageSize) {
     try {
       return this.model.findAndCountAll({
+        ...(page && { offset: (Number(page) - 1) * Number(pageSize) }),
+        ...(pageSize && { limit: Number(pageSize) }),
         attributes: { exclude: ['deletedAt'] }
       });
     } catch (error) {
-      console.log(error);
-      throw new APIErrorException(error);
+      throw new APIErrorException('API_ERROR', 500, error.message);
     }
   }
 }

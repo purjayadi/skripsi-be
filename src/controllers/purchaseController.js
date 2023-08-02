@@ -16,6 +16,7 @@ class PurchaseController {
           .json({ status: 200, result: unit, message: 'Pencarian data berhasil' });
       }
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
@@ -71,7 +72,7 @@ class PurchaseController {
     const { id } = req.params;
     try {
       await service.delete(id);
-      res.status(200).json({ status: 200, message: 'Berhasil pembelian produk' });
+      res.status(200).json({ status: 200, message: 'Berhasil hapus pembelian produk' });
     } catch (error) {
       next(error);
     }

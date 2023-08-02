@@ -10,7 +10,6 @@ function auth(req, res, next) {
 
   jwt.verify(token, jwtConfig.secret, (err, user) => {
     if (err) {
-      console.log(err);
       return res.sendStatus(403);
     }
     req.user = user;

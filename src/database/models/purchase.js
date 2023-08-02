@@ -19,6 +19,10 @@ module.exports = (sequelize, DataTypes) => {
       Purchase.belongsTo(models.User, {
         foreignKey: 'userId'
       });
+
+      Purchase.belongsTo(models.Supplier, {
+        foreignKey: 'supplierId'
+      });
     }
   }
   Purchase.init({
@@ -30,7 +34,8 @@ module.exports = (sequelize, DataTypes) => {
     code: DataTypes.STRING,
     date: DataTypes.DATEONLY,
     total: DataTypes.DECIMAL,
-    userId: DataTypes.STRING
+    userId: DataTypes.STRING,
+    supplierId: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'Purchase',
@@ -52,6 +57,15 @@ module.exports = (sequelize, DataTypes) => {
           model: sequelize.models.Product,
           attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] }
         }
+      }
+    ]
+  }));
+
+  Purchase.addScope('supplier', () => ({
+    include: [
+      {
+        model: sequelize.models.Supplier,
+        attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] }
       }
     ]
   }));

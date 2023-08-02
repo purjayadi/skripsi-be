@@ -3,13 +3,13 @@ import sequelize from '../../config/database';
 import { APIErrorException } from '../../common/HttpException';
 import model from '../models';
 
-const { PurchaseDetail, Purchase, Product } = model;
-class PurchaseRepository extends BaseRepository {
+const { TransactionDetail, Transaction, Product } = model;
+class OrderRepository extends BaseRepository {
   /**
    * Initializes the PurchaseRepository class.
    */
   constructor() {
-    super(Purchase);
+    super(Transaction);
   }
 
   async findAll(page, pageSize) {
@@ -35,7 +35,7 @@ class PurchaseRepository extends BaseRepository {
         ...item,
         purchaseId: purchase.id
       }));
-      await PurchaseDetail.bulkCreate(purchaseDetailList, { transaction: t });
+      await TransactionDetail.bulkCreate(purchaseDetailList, { transaction: t });
       purchaseDetailList.map(async (item) => {
         await Product.increment(
           { stock: item.qty },
@@ -59,10 +59,10 @@ class PurchaseRepository extends BaseRepository {
         ...item,
         purchaseId: id
       }));
-      const findPurchaseDetail = await PurchaseDetail.findAll({
+      const findTransactionDetail = await TransactionDetail.findAll({
         where: { purchaseId: id }
       });
-      const promiseOldStock = findPurchaseDetail.map(async (item) => {
+      const promiseOldStock = findTransactionDetail.map(async (item) => {
         await Product.increment(
           { stock: -item.qty },
           { where: { id: item.productId } },
@@ -70,12 +70,12 @@ class PurchaseRepository extends BaseRepository {
         );
       });
       await Promise.all(promiseOldStock);
-      await PurchaseDetail.destroy({
+      await TransactionDetail.destroy({
         where: {
           purchaseId: id
         }
       }, { transaction: t });
-      await PurchaseDetail.bulkCreate(purchaseDetailList, { transaction: t });
+      await TransactionDetail.bulkCreate(purchaseDetailList, { transaction: t });
       purchaseDetailList.map(async (item) => {
         await Product.increment(
           { stock: item.qty },
@@ -94,15 +94,15 @@ class PurchaseRepository extends BaseRepository {
   async delete(id) {
     const t = await sequelize.transaction();
     try {
-      const purchase = await Purchase.destroy({
+      const purchase = await this.model.destroy({
         where: {
           id
         }
       }, { transaction: t });
-      const findPurchaseDetail = await PurchaseDetail.findAll({
+      const findTransactionDetail = await TransactionDetail.findAll({
         where: { purchaseId: id }
       });
-      const promiseOldStock = findPurchaseDetail.map(async (item) => {
+      const promiseOldStock = findTransactionDetail.map(async (item) => {
         await Product.increment(
           { stock: -item.qty },
           { where: { id: item.productId } },
@@ -110,7 +110,7 @@ class PurchaseRepository extends BaseRepository {
         );
       });
       await Promise.all(promiseOldStock);
-      await PurchaseDetail.destroy({
+      await TransactionDetail.destroy({
         where: {
           purchaseId: id
         }
@@ -124,4 +124,4 @@ class PurchaseRepository extends BaseRepository {
   }
 }
 
-export default PurchaseRepository;
+export default OrderRepository;

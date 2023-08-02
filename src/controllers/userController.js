@@ -47,7 +47,7 @@ class UserController {
     const { id } = req.params;
     try {
       const users = await service.update(id, payload);
-      res.status(201).json(users);
+      res.status(200).json(users);
     } catch (error) {
       next(error);
     }

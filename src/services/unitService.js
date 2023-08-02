@@ -1,6 +1,6 @@
+import { DuplicateException } from '../common/HttpException';
 import BaseService from '../common/baseService';
 import UnitRepository from '../database/repositories/unitRepository';
-import { DuplicateException } from '../utils/HttpException';
 
 class UnitService extends BaseService {
   constructor() {

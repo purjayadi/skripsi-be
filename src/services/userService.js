@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 import BaseService from '../common/baseService';
 import UserRepository from '../database/repositories/userRepository';
 import jwtConfig from '../config/jwt';
-import { DuplicateException, UnauthorizedException } from '../utils/HttpException/index';
+import { DuplicateException, UnauthorizedException } from '../common/HttpException';
 
 class UserService extends BaseService {
   constructor() {
