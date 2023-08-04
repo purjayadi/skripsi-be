@@ -1,17 +1,12 @@
+import { NotFoundException } from '../common/HttpException';
 import BaseService from '../common/baseService';
 import PurchaseRepository from '../database/repositories/purchaseRepository';
 import { calculateSubtotal } from '../utils/helper';
-import Pagination from '../utils/pagination';
 
 class PurchaseService extends BaseService {
   constructor() {
     const repository = new PurchaseRepository();
     super(repository);
-  }
-
-  async getAll(page, pageSize) {
-    const data = await this.repository.findAll(page, pageSize);
-    return Pagination(data, page, pageSize);
   }
 
   async create(payload, userId) {
@@ -37,6 +32,8 @@ class PurchaseService extends BaseService {
   }
 
   async update(id, payload) {
+    const findPurchase = await this.repository.findById(id);
+    if (!findPurchase) throw new NotFoundException('Data tidak ditemukan');
     let total = 0;
     const products = payload.products.map((product) => {
       const { qty, price } = product;

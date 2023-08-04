@@ -6,6 +6,7 @@ import authRoute from './authRoute';
 import fileRoute from './fileRoute';
 import purchaseRoute from './purchaseRoute';
 import supplierRoute from './supplierRoute';
+import orderRoute from './orderRoute';
 
 const index = express.Router();
 
@@ -16,5 +17,6 @@ index.use('/product', productRoute);
 index.use('/purchase', purchaseRoute);
 index.use('/auth', authRoute);
 index.use('/file', fileRoute);
+index.use('/order', orderRoute);
 
 export default index;
