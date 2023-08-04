@@ -29,6 +29,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     code: DataTypes.STRING,
     date: DataTypes.DATEONLY,
+    type: DataTypes.ENUM('Ritel', 'Grosir'),
     total: DataTypes.DECIMAL,
     userId: DataTypes.STRING
   }, {
@@ -40,8 +41,24 @@ module.exports = (sequelize, DataTypes) => {
       beforeSave: (transaction) => {
         transaction.code = generateUniqueCode('INV');
       }
+    },
+    defaultScope: {
+      attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] }
     }
   });
+
+  Transaction.addScope('transactionDetail', () => ({
+    include: [
+      {
+        model: sequelize.models.TransactionDetail,
+        attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt', 'transactionId', 'productId'] },
+        include: {
+          model: sequelize.models.Product,
+          attributes: { exclude: ['createdAt', 'updatedAt', 'deletedAt'] }
+        }
+      }
+    ]
+  }));
 
   return Transaction;
 };

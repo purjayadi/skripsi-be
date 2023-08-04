@@ -54,7 +54,9 @@ class BaseRepository {
       return this.model.findAndCountAll({
         ...(page && { offset: (Number(page) - 1) * Number(pageSize) }),
         ...(pageSize && { limit: Number(pageSize) }),
-        attributes: { exclude: ['deletedAt'] }
+        attributes: { exclude: ['deletedAt'] },
+        distinct: true,
+        col: this.model.id
       });
     } catch (error) {
       throw new APIErrorException('API_ERROR', 500, error.message);

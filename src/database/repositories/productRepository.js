@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import BaseRepository from '../../common/baseRepository';
 import sequelize from '../../config/database';
 import model from '../models';
@@ -12,12 +13,24 @@ class ProductRepository extends BaseRepository {
 
   async findAll(page, pageSize) {
     try {
-      return await this.model.scope('withPrice').findAndCountAll({
+      return await this.model.scope('withPrice', 'defaultScope').findAndCountAll({
         ...(page && { offset: (Number(page) - 1) * Number(pageSize) }),
         ...(pageSize && { limit: Number(pageSize) }),
-        attributes: { exclude: ['deletedAt'] },
         order: [['createdAt', 'desc']]
       });
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
+  }
+
+  async findPriceProduct(productId, unitId) {
+    try {
+      const product = await ProductPrice.findOne({
+        where: {
+          [Op.and]: [{ productId }, { unitId }]
+        }
+      });
+      return product;
     } catch (error) {
       throw new APIErrorException('API_ERROR', 500, error.message);
     }
@@ -64,7 +77,7 @@ class ProductRepository extends BaseRepository {
 
   async findByCode(code) {
     try {
-      return await this.model.findOne({
+      return await this.model.scope('withPrice', 'defaultScope').findOne({
         where: {
           code
         }

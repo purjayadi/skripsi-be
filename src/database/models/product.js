@@ -15,6 +15,9 @@ module.exports = (sequelize, DataTypes) => {
       Product.hasMany(models.PurchaseDetail, {
         foreignKey: 'productId'
       });
+      Product.hasMany(models.TransactionDetail, {
+        foreignKey: 'productId'
+      });
       Product.hasMany(models.Stock, {
         foreignKey: 'productId'
       });
@@ -34,7 +37,10 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'Product',
     paranoid: true,
-    timestamps: true
+    timestamps: true,
+    defaultScope: {
+      attributes: { exclude: ['deletedAt'] }
+    }
   });
 
   Product.addScope('withPrice', () => ({

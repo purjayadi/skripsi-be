@@ -27,6 +27,17 @@ class PurchaseRepository extends BaseRepository {
     }
   }
 
+  async findById(id) {
+    try {
+      return await this.model.scope('supplier', 'purchaseDetail').findOne({
+        where: { id },
+        attributes: { exclude: ['deletedAt', 'supplierId'] }
+      });
+    } catch (error) {
+      throw new APIErrorException('API_ERROR', 500, error.message);
+    }
+  }
+
   async create(payload) {
     const t = await sequelize.transaction();
     try {
