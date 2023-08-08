@@ -18,12 +18,12 @@ class UserService extends BaseService {
     return user;
   }
 
-  async login(email, password) {
+  async login(email, sandi) {
     const user = await this.repository.findByEmail(email);
     if (!user) throw new UnauthorizedException('Invalid email or password');
-    const validPassword = await bcrypt.compare(password, user?.password);
+    const validPassword = await bcrypt.compare(sandi, user?.sandi);
     if (!validPassword) throw new UnauthorizedException('Invalid email or password');
-    const jwtPayload = { id: user.id, role: user.role };
+    const jwtPayload = { id: user.id_user, role: user.role };
     const token = jwt.sign(jwtPayload, jwtConfig.secret, { expiresIn: jwtConfig.expiresIn });
     return token;
   }

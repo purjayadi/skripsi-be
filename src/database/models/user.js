@@ -16,8 +16,10 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   User.init({
-    user_id: {
-
+    id_user: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
     },
     name: DataTypes.STRING,
     email: DataTypes.STRING,
@@ -27,7 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'users',
-    paranoid: true,
     timestamps: true,
     hooks: {
       beforeSave: (user) => {

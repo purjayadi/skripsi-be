@@ -4,12 +4,13 @@ const service = new UserService();
 class UserController {
   static async login(req, res, next) {
     try {
-      const { username, password } = req.body;
-      const token = await service.login(username, password);
+      const { email, sandi } = req.body;
+      const token = await service.login(email, sandi);
       res
         .status(200)
         .json({ status: 200, accessToken: token, message: 'Login success' });
     } catch (error) {
+      console.log(error);
       next(error);
     }
   }
