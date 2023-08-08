@@ -1,23 +1,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Products', {
-      id: {
+    await queryInterface.createTable('kontak', {
+      id_kontak: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID
-      },
-      code: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       name: {
         type: Sequelize.STRING
       },
-      stock: {
+      email: {
         type: Sequelize.STRING
       },
-      photo: {
+      tentang: {
         type: Sequelize.STRING
+      },
+      pesan: {
+        type: Sequelize.STRING
+      },
+      tgl: {
+        type: Sequelize.DATE
       },
       createdAt: {
         allowNull: false,
@@ -26,14 +30,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      deletedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
       }
     });
   },
-  async down(queryInterface) {
-    await queryInterface.dropTable('Products');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('kontak');
   }
 };

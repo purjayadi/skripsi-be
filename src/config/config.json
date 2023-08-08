@@ -1,9 +1,9 @@
 {
   "development": {
     "username": "root",
-    "password": "password",
-    "database": "pos_mini",
-    "host": "127.0.0.1",
+    "password": "root",
+    "database": "skirpsi-app",
+    "host": "0.0.0.0",
     "port": 3306,
     "dialect": "mysql"
   },

@@ -3,12 +3,12 @@ import models from '../models';
 
 class UserRepository extends BaseRepository {
   constructor() {
-    super(models.User);
+    super(models.users);
   }
 
-  async findByUsername(username) {
+  async findByEmail(email) {
     return this.model.findOne({
-      where: { username }
+      where: { email }
     });
   }
 }

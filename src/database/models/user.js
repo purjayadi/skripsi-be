@@ -12,40 +12,33 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      User.hasMany(models.Purchase, {
-        foreignKey: 'userId'
-      });
 
-      User.hasMany(models.Transaction, {
-        foreignKey: 'userId'
-      });
     }
   }
   User.init({
-    id: {
-      type: DataTypes.UUID,
-      primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+    user_id: {
+
     },
-    username: DataTypes.STRING,
-    password: DataTypes.STRING,
-    role: DataTypes.ENUM('ADMIN', 'KASIR'),
-    isActive: DataTypes.BOOLEAN
+    name: DataTypes.STRING,
+    email: DataTypes.STRING,
+    sandi: DataTypes.STRING,
+    image: DataTypes.STRING,
+    role: DataTypes.ENUM('ADMIN', 'USER')
   }, {
     sequelize,
-    modelName: 'User',
+    modelName: 'users',
     paranoid: true,
     timestamps: true,
     hooks: {
       beforeSave: (user) => {
-        if (user.changed('password')) {
-          user.password = hashSync(user.password, genSaltSync(10));
+        if (user.changed('sandi')) {
+          user.sandi = hashSync(user.sandi, genSaltSync(10));
         }
       }
     },
     scopes: {
       withoutPassword: {
-        attributes: { exclude: ['password'] }
+        attributes: { exclude: ['sandi'] }
       }
     }
   });

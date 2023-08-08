@@ -1,27 +1,27 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Stocks', {
+    await queryInterface.createTable('transaksi_detail', {
       id: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID
-      },
-      productId: {
-        type: Sequelize.UUID,
-        references: {
-          model: 'Products',
-          key: 'id'
-        }
-      },
-      openingStock: {
         type: Sequelize.INTEGER
       },
-      closingStock: {
+      id_transaksi: {
         type: Sequelize.INTEGER
       },
-      date: {
-        type: Sequelize.DATEONLY
+      id_pesan: {
+        type: Sequelize.INTEGER
+      },
+      id_produk: {
+        type: Sequelize.STRING
+      },
+      kuantiti: {
+        type: Sequelize.INTEGER
+      },
+      total: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -30,14 +30,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      deletedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
       }
     });
   },
-  async down(queryInterface) {
-    await queryInterface.dropTable('Stocks');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('transaksi_detail');
   }
 };

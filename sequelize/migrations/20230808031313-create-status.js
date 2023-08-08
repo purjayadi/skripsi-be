@@ -1,13 +1,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('Units', {
-      id: {
+    await queryInterface.createTable('status', {
+      id_status: {
         allowNull: false,
+        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.UUID
+        type: Sequelize.INTEGER
       },
-      name: {
+      keterangan: {
         type: Sequelize.STRING
       },
       createdAt: {
@@ -17,14 +18,10 @@ module.exports = {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      deletedAt: {
-        allowNull: true,
-        type: Sequelize.DATE
       }
     });
   },
-  async down(queryInterface) {
-    await queryInterface.dropTable('Units');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('status');
   }
 };

@@ -12,17 +12,17 @@ class UserService extends BaseService {
   }
 
   async create(payload) {
-    const isExist = await this.repository.findByUsername(payload.username);
-    if (isExist) throw new DuplicateException('Username already exist');
+    // const isExist = await this.repository.findByEmail(payload.email);
+    // if (isExist) throw new DuplicateException('Email already exist');
     const user = this.repository.create(payload);
     return user;
   }
 
-  async login(username, password) {
-    const user = await this.repository.findByUsername(username);
-    if (!user) throw new UnauthorizedException('Invalid username or password');
+  async login(email, password) {
+    const user = await this.repository.findByEmail(email);
+    if (!user) throw new UnauthorizedException('Invalid email or password');
     const validPassword = await bcrypt.compare(password, user?.password);
-    if (!validPassword) throw new UnauthorizedException('Invalid username or password');
+    if (!validPassword) throw new UnauthorizedException('Invalid email or password');
     const jwtPayload = { id: user.id, role: user.role };
     const token = jwt.sign(jwtPayload, jwtConfig.secret, { expiresIn: jwtConfig.expiresIn });
     return token;

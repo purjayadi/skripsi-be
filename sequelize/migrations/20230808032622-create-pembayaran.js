@@ -1,27 +1,24 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('users', {
-      id_user: {
+    await queryInterface.createTable('pembayaran', {
+      id_pembayaran: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      name: {
+      id_pesan: {
         type: Sequelize.STRING
       },
-      email: {
+      nama: {
         type: Sequelize.STRING
       },
-      sandi: {
-        type: Sequelize.STRING
+      nominal: {
+        type: Sequelize.INTEGER
       },
-      image: {
+      gambar: {
         type: Sequelize.STRING
-      },
-      role: {
-        type: Sequelize.ENUM('ADMIN', 'USER')
       },
       createdAt: {
         allowNull: false,
@@ -33,7 +30,7 @@ module.exports = {
       }
     });
   },
-  async down(queryInterface) {
-    await queryInterface.dropTable('users');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('pembayaran');
   }
 };
