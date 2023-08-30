@@ -39,7 +39,6 @@ class UserController {
       const users = await service.create(payload);
       res.status(201).json(users);
     } catch (error) {
-      console.log(error);
       next(error);
     }
   }

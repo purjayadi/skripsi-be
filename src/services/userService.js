@@ -12,8 +12,8 @@ class UserService extends BaseService {
   }
 
   async create(payload) {
-    // const isExist = await this.repository.findByEmail(payload.email);
-    // if (isExist) throw new DuplicateException('Email already exist');
+    const isExist = await this.repository.findByEmail(payload.email);
+    if (isExist) throw new DuplicateException('Email already exist');
     const user = this.repository.create(payload);
     return user;
   }

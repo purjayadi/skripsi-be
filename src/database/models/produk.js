@@ -1,7 +1,7 @@
-'use strict';
 const {
   Model
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class produk extends Model {
     /**
@@ -14,6 +14,11 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   produk.init({
+    id_barang: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
     name: DataTypes.STRING,
     harga: DataTypes.DECIMAL,
     stok: DataTypes.INTEGER,
@@ -23,6 +28,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'produk',
+    tableName: 'produk'
   });
   return produk;
 };
